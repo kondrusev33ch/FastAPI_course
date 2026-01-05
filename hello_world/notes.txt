@@ -1,0 +1,13 @@
+ http://127.0.0.1:8000/docs/ - swagger
+ http://127.0.0.1:8000/openapi.json - openai schema
+
+
+# launch
+uvicorn api:app --port 8000 --reload
+
+# Как отключить генерацию документации при создании приложения
+app = FastAPI(
+    docs_url=None,  # Disable docs (Swagger UI)
+    redoc_url=None,  # Disable redoc
+)
+

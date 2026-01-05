@@ -1,0 +1,13 @@
+# FastAPI
+asyncio
+fastapi
+
+# Jupyter Notebook
+ipykernel
+
+# Web
+uvicorn
+
+# Frontend
+jinja2
+python-multipart
