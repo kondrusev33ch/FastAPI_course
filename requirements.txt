@@ -11,3 +11,13 @@ uvicorn
 # Frontend
 jinja2
 python-multipart
+
+# Database
+sqlalchemy
+
+# Миграции
+alembic
+
+# Установка асинхронного драйвера
+asyncpg
+greenlet
