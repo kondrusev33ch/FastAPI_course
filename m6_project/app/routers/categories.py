@@ -1,12 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select, update
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.categories import Category as CategoryModel
 from app.schemas import Category as CategorySchema, CategoryCreate
-from app.db_depends import get_db
-
-from sqlalchemy.ext.asyncio import AsyncSession
 from app.db_depends import get_async_db
 
 
@@ -23,8 +20,7 @@ async def get_all_categories(db: AsyncSession = Depends(get_async_db)):
     Возвращает список всех активных категорий.
     """
     result = await db.scalars(select(CategoryModel).where(CategoryModel.is_active==True))
-    categories = result.all()
-    return categories
+    return result.all()
 
 
 
