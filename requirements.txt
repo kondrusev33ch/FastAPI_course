@@ -21,3 +21,6 @@ alembic
 # Установка асинхронного драйвера
 asyncpg
 greenlet
+
+# Хэширование
+passlib
