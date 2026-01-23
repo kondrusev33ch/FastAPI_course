@@ -28,3 +28,8 @@ pydantic[email]
 # Хэширование
 passlib
 bcrypt==4.0.1
+
+# JWT
+PyJWT 
+python-dotenv 
+python-multipart
