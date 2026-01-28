@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field, ConfigDict, EmailStr
 from decimal import Decimal
 from typing import Optional
+from datetime import datetime
 
 
 class CategoryCreate(BaseModel):
@@ -59,18 +60,51 @@ class Product(BaseModel):
 
 
 class UserCreate(BaseModel):
+    """
+    Модель для создания и обновления пользователя.
+    Используется в POST и PUT запросах.
+    """
     email: EmailStr = Field(description="Email пользователя")
     password: str = Field(min_length=8, description="Пароль (минимум 8 символов)")
     role: str = Field(default="buyer", pattern="^(buyer|seller)$", description="Роль: 'buyer' или 'seller'")
 
 
 class User(BaseModel):
-    id: int
-    email: EmailStr
-    is_active: bool
-    role: str
+    """
+    Модель для ответа с данными пользователя.
+    Используется в GET-запросах.
+    """
+    id: int = Field(..., description="Уникальный идентификатор пользователя")
+    email: EmailStr = Field(description="Email пользователя")
+    is_active: bool = Field(..., description="Активность пользователя")
+    role: str = Field(default="buyer", pattern="^(buyer|seller)$", description="Роль: 'buyer' или 'seller'")
     model_config = ConfigDict(from_attributes=True)
 
 
 class RefreshTokenRequest(BaseModel):
     refresh_token: str
+
+
+class ReviewCreate(BaseModel):
+    """
+    Модель для создания и обновления отзыва.
+    Используется в POST и PUT запросах.
+    """
+    comment: str | None = Field(None, description="Комментарий от пользователя")
+    grade: int = Field(..., ge=1, le=5, description="Оценка: от 1 до 5")
+
+
+class Review(BaseModel):
+    """
+    Модель для ответа с данными отзывов.
+    Используется в GET-запросах.
+    """
+    id: int = Field(..., description="Уникальный идентификатор отзыва")
+    user_id: int = Field(..., description="ID пользователя, которой оставил отзыв")
+    product_id: int = Field(..., description="ID товара, на который оставили отзыв")
+    comment: str | None = Field(None, description="Комментарий от пользователя")
+    comment_date: datetime = Field(..., description="Дата создания отзыва")
+    grade: int = Field(..., ge=1, le=5, description="Оценка: от 1 до 5")
+    is_active: bool = Field(..., description="Активность отзыва")
+
+    model_config = ConfigDict(from_attributes=True)
