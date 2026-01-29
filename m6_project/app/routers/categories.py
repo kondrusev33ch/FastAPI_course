@@ -43,6 +43,7 @@ async def create_category(category: CategoryCreate, db: AsyncSession = Depends(g
     db_category = CategoryModel(**category.model_dump())
     db.add(db_category)
     await db.commit()
+    await db.refresh(db_category)
     return db_category
 
 
@@ -78,6 +79,7 @@ async def update_category(category_id: int, category: CategoryCreate, db: AsyncS
         .values(**update_data)
     )
     await db.commit()
+    await db.refresh(db_category)
     return db_category
 
 
@@ -99,4 +101,5 @@ async def delete_category(category_id: int, db: AsyncSession = Depends(get_async
         .values(is_active=False)
     )
     await db.commit()
+    await db.refresh(db_category)
     return db_category
