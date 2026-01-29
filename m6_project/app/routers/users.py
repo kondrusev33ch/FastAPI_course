@@ -74,7 +74,7 @@ async def refresh_token(refresh_token: str, db: AsyncSession = Depends(get_async
         email: str = payload.get("sub")
         if email is None:
             raise credentials_exception
-    except jwt.exceptions:
+    except jwt.PyJWTError:
         raise credentials_exception
     result = await db.scalars(
         select(UserModel).where(UserModel.email == email, UserModel.is_active == True))
