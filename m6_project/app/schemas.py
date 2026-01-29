@@ -54,6 +54,7 @@ class Product(BaseModel):
     image_url: str | None = Field(None, description="URL изображения товара")
     stock: int = Field(..., description="Количество товара на складе")
     category_id: int = Field(..., description="ID категории")
+    rating: Decimal = Field(..., description="Рейтинг товара на основе отзывов", ge=1, le=5, decimal_places=2)
     is_active: bool = Field(..., description="Активность товара")
 
     model_config = ConfigDict(from_attributes=True)
@@ -90,6 +91,7 @@ class ReviewCreate(BaseModel):
     Модель для создания и обновления отзыва.
     Используется в POST и PUT запросах.
     """
+    product_id: int = Field(..., description="ID товара, на который оставляют отзыв")
     comment: str | None = Field(None, description="Комментарий от пользователя")
     grade: int = Field(..., ge=1, le=5, description="Оценка: от 1 до 5")
 
@@ -100,8 +102,8 @@ class Review(BaseModel):
     Используется в GET-запросах.
     """
     id: int = Field(..., description="Уникальный идентификатор отзыва")
-    user_id: int = Field(..., description="ID пользователя, которой оставил отзыв")
-    product_id: int = Field(..., description="ID товара, на который оставили отзыв")
+    user_id: int = Field(..., description="ID пользователя, которой оставляют отзыв")
+    product_id: int = Field(..., description="ID товара, на который оставляют отзыв")
     comment: str | None = Field(None, description="Комментарий от пользователя")
     comment_date: datetime = Field(..., description="Дата создания отзыва")
     grade: int = Field(..., ge=1, le=5, description="Оценка: от 1 до 5")
