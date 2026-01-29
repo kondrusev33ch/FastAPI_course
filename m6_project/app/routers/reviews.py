@@ -75,7 +75,7 @@ async def create_review(
     await db.commit()
     await db.refresh(db_review)  # Для получения id и is_active из базы
 
-    update_product_rating(db=db, product_id=review.product_id)
+    await update_product_rating(db=db, product_id=review.product_id)
     return db_review
 
 
@@ -101,5 +101,5 @@ async def delete_review(
     await db.commit()
     await db.refresh(review)  # Для возврата is_active = False
 
-    update_product_rating(db=db, product_id=review.product_id)
+    await update_product_rating(db=db, product_id=review.product_id)
     return review
