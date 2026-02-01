@@ -56,6 +56,9 @@ class Product(BaseModel):
     category_id: int = Field(..., description="ID категории")
     rating: Decimal = Field(..., description="Рейтинг товара на основе отзывов", ge=0, le=5, decimal_places=2)
     is_active: bool = Field(..., description="Активность товара")
+    created_at: datetime = Field(..., description="Дата создания товара")
+    updated_at: datetime = Field(..., description="Дата обновления товара")
+
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -110,3 +113,15 @@ class Review(BaseModel):
     is_active: bool = Field(..., description="Активность отзыва")
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class ProductList(BaseModel):
+    """
+    Список пагинации для товаров.
+    """
+    items: list[Product] = Field(description="Товары для текущей страницы")
+    total: int = Field(ge=0, description="Общее количество товаров")
+    page: int = Field(ge=1, description="Номер текущей страницы")
+    page_size: int = Field(ge=1, description="Количество элементов на странице")
+    
+    model_config = ConfigDict(from_attributes=True)  # Для чтения из ORM-объектов
